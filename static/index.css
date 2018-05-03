@@ -17,7 +17,7 @@ html, body {
     font-family: Rounded;
     margin-bottom: 3.1vh;
     display: block;
-    width: 9vw;
+    width: 8vw;
     height: 9.2vh;
     /* Rollover effect: */
     -webkit-transition-duration: 0.4s; /* Safari */
@@ -108,7 +108,7 @@ html, body {
 
 .course-name {
     display: block;
-    font-size: calc(0.7vw + 0.6vh);
+    font-size: calc(0.6vw + 0.6vh);
     line-height: 120%;
 }
 
