@@ -108,20 +108,20 @@ html, body {
 
 .course-name {
     display: block;
-    font-size: calc(0.6vw + 0.6vh);
+    font-size: calc(0.6vw + 0.5vh);
     line-height: 120%;
 }
 
 .course-credits {
     margin-top: 0.2vw;
     display: block;
-    font-size: calc(0.5vw + 0.9vh);
+    font-size: calc(0.5vw + 0.7vh);
 }
 
 
 .semester-name {
     display: block;
-    font-size: calc(0.7vw + 1vh);
+    font-size: calc(0.7vw + 0.9vh);
 }
 
 /* Prevents text selection on mousedown: */
