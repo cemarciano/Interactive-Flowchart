@@ -32,6 +32,43 @@ var pressAndHoldTime = 500;     // Period of time for the program to consider a 
 
      });
 
+     // Creates stacked progress bar
+     var progbar = $("<div/>",
+        {
+            "class": "progress",
+            "id": "progbar"
+        });
+     $("#panel").append(progbar);    
+ 
+     var colors = ["blue", "yellow", "green"]
+     var childprogbars = [];
+
+     categories.forEach(function(category,i) {
+        if (getTotalCredits(category.id) == 0) {
+            var completed = getCompletedWorkload(category.id);
+            var total = getTotalWorkload(category.id);
+        } else {
+            var completed = getCompletedCredits(category.id);
+            var total = getTotalCredits(category.id);
+        }
+        childprogbars[i] = $("<div/>",
+        {
+            "class": "progress-bar",
+            "id": "subprogbar"+category.id,
+            "role": "progressbar",
+            "style": "width:100%; background-color:"+colors[i],
+            "text": category.name + " " + completed + "/" + total
+        });
+        $("#progbar").append(childprogbars[i]); 
+     });
+
+           
+     // Get total credits and workload per category
+     categories.forEach(function(category) {
+        getTotalCredits(category.id);
+        getTotalWorkload(category.id);
+    });
+
 
      // Creates semester columns:
      for (var i=1; i<=semesters; i++){
@@ -121,7 +158,8 @@ var pressAndHoldTime = 500;     // Period of time for the program to consider a 
         }(i));
 
         // Updates button according to course completion:
-        if (parseInt(courses[i].status) == courses[i].credits) {
+        var status = parseInt(courses[i].status);
+        if ((status == courses[i].credits) || status == courses[i].workload) {
             rectangle.addClass("complete-course");
         } else {
             rectangle.addClass("incomplete-course");
@@ -136,24 +174,28 @@ var pressAndHoldTime = 500;     // Period of time for the program to consider a 
             });
         name.html(courses[i].name);
 
-        // Creates a span element to hold the number of credits:
+        // Creates a span element to hold the number of credits or workload:
         var credits = $("<span/>",
             {
                 "class": "course-credits",
                 "id": "course-credits"+i
             });
 
-        // Checks what kind of credits the metric means:
+        // Displays credits or workload if course has no credits:
         var text = "";
-        if (courses[i].credits == 1){
-            text = " crédito)";
-        } else if (courses[i].credits < 30){
-            text = " créditos)";
-        } else {
+        if (courses[i].credits == 0){
             text = " horas)";
+            credits.html("(" + courses[i].workload + text);
+        } 
+        else if (courses[i].credits == 1){
+            text = " crédito)";
+            credits.html("(" + courses[i].credits + text);
+        } 
+        else {
+            text = " créditos)";
+            credits.html("(" + courses[i].credits + text);
         }
-        credits.html("(" + courses[i].credits + text);
-
+        
         // Inserts course info into the corresponding semester DOM:
         var parent = $("#column" + courses[i].semester);
         rectangle.append(name);
@@ -193,20 +235,96 @@ function onLongTouch(index) {
     }
 }
 
+
+// Function to define the completed number of credits 
+function getCompletedCredits(category) {
+    var comp_cred = 0;
+    courses.forEach(function(course, index) {
+        var status = getCookie(index);
+        if ((course.category == category) && (status != 0)) 
+            comp_cred += course.credits;
+    });
+    return comp_cred;
+}
+
+// Function to define the completed workload 
+function getCompletedWorkload(category) {
+    var comp_workload = 0;
+    courses.forEach(function(course, index) {
+        var status = getCookie(index);
+        if ((course.category == category) && (status != 0)) 
+            comp_workload += course.workload;
+    });
+    return comp_workload;
+}
+
+    console.log(getCookie(2));
+    getCompletedCredits(1);
+// Function to define the total number of credits needed for diploma completion
+function getTotalCredits(category) {
+    var total_cred = 0;
+    courses.forEach(function(course) {
+        if (course.category == category) total_cred += course.credits;
+    });
+    console.log(total_cred);
+    return total_cred;
+}
+
+// Function to define the total workload needed for diploma completion
+function getTotalWorkload(category) {
+    var total_workload = 0;
+    courses.forEach(function(course) {
+        if (course.category == category) total_workload += course.workload;
+    });
+    console.log(total_workload);
+    return total_workload;
+}
+
+getTotalWorkload(1);
+
+
 // Function to toggle complete/incomplete when clicking on a course:
 function courseToggle(index){
 
     // Finds the corresponding course button:
     var course = $("#course"+index);
-    var status = "";
+    var category = categories[courses[index].category-1];
+    var subprogbar = $("#subprogbar"+category.id);
+    
+    if (getTotalCredits(category.id) == 0) {
+        var completed = getCompletedWorkload(category.id);
+        var total = getTotalWorkload(category.id);
+    } else {
+        var completed = getCompletedCredits(category.id);
+        var total = getTotalCredits(category.id);
+    }    
 
+    console.log(category.name + " " + completed + "/" + total);
+    //var status = "";
+
+    // Define status meaning (credits or workload) and stepsize for each progress bar
+    if(courses[index].credits == 0) {
+        var status = courses[index].workload.toString();
+        var step = parseInt(status)/getTotalWorkload(courses[index].category);
+    } else {
+        var status = courses[index].credits.toString();
+        var step = parseInt(status)/getTotalCredits(courses[index].category);
+    } 
+    
     // Toggles the button completion:
     if (course.hasClass("incomplete-course")){
         course.removeClass("incomplete-course").addClass("complete-course");
-        status = courses[index].credits.toString();
+        completed+= parseInt(status);
+        subprogbar.text(category.name + " " + completed + "/" + total);        
+        //subprogbar.width(subprogbar.width()*(1+step));
     } else {
         course.removeClass("complete-course").addClass("incomplete-course");
+        console.log(step);
+        completed-= parseInt(status);
+        subprogbar.text(category.name + " " + completed + "/" + total);        
+        //subprogbar.width(subprogbar.width()*(1-step));
         status = "0";
+
     }
 
     // Saves the cookie:
@@ -233,16 +351,24 @@ function courseTooltip(index){
         // Creates a tooltip:
         var tooltip = $("<div/>",
             {
-                "class": "tt" + index + " tooltip top"
+                "class": "tt" + index + " tooltip top",
+                "style": "display: block" //tag-debug
             });
 
         // Creates the slider div:
         var slider = $("<div/>",
             {
-                "class": "slider"
+                "class": "slider",
             });
         tooltip.append(slider);
 
+        var max;
+        if (courses[index].credits == 0)
+            max = courses[index].workload;
+        else 
+            max = courses[index].credits;
+
+        console.log(parseInt(courses[index].status));    
         // Initializes the slider (slider[0] is just jquery obj to vanilla JS obj):
         noUiSlider.create(slider[0], {
             // Initital value:
@@ -267,7 +393,7 @@ function courseTooltip(index){
             // Min and max values:
     		range: {
     			'min': 0,
-    			'max': courses[index].credits
+    			'max': max  
     		}
     	});
 
@@ -336,7 +462,10 @@ function closeAllTooltips(keepOpen){
 // Adds a fraction of a completed background to a course if it is not completed:
 function scaleBackground(index){
     // Adds completion color to course element:
-    var scale = parseInt(courses[index].status) / courses[index].credits;
+    if(courses[index].credits == 0)
+        var scale = parseInt(courses[index].status) / courses[index].workload;
+    else
+        var scale = parseInt(courses[index].status) / courses[index].credits;
     if (scale != 1){
         $("#course"+index).css("background-image", "-webkit-linear-gradient(bottom, #b1fca4, #b1fca4 " + scale*100 + "%, transparent " + scale*100 + "%, transparent 100%)");
     }
@@ -357,7 +486,8 @@ function verifySemester(index){
         if (courses[i].semester == index){
             belonging += 1;
             // Checks if course is completed:
-            if (parseInt(courses[i].status) == courses[i].credits){
+            var status = parseInt(courses[i].status)
+            if ((status == courses[i].credits) || (status == courses[i].workload)) {
                 completed += 1;
             }
         }
@@ -445,7 +575,7 @@ function handleMobileOrientation(){
 }
 
 
-/* COOKIE FUNCTIONS */
+// COOKIE FUNCTIONS 
 
 
 // Checks if cookies already exist:
