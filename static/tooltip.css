@@ -96,3 +96,49 @@
     -ms-transform:scale(0.77);
     transform:scale(0.77);
 }
+
+
+/*Extra subjects tooltip */
+
+.tooltip2 {
+    text-align: center;
+}
+
+.tooltip2 .tooltiptext {
+    width: 27.5vw;
+    border-style: solid;
+    border-color: black;
+    background-color: #D9E9DA;
+    color: black;
+    font-size: calc(0.7vw + 0.6vh);
+    text-align: center;
+    padding: 5px 0vw;
+    position: relative;
+    right: 61vw;
+    top: -2vh;
+    
+    /* Fade in tooltip - takes 1 second to go from 0% to 100% opac: */
+    display: none;
+    transition: opacity 1s;
+}
+
+
+#courseTable {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 27vw;
+}
+
+#courseTable td, #courseTable th {
+    border: 1px solid #ddd;
+}
+
+#courseTable tr:nth-child(even){background-color: #D9E9DA;}
+
+#courseTable tr:hover {background-color: #ddd;}
+
+#courseTable th {
+    text-align: center;
+    background-color: grey;
+    color: white;
+}

@@ -164,23 +164,33 @@ html, body {
 
 
 #options-menu #help {
-	top: 1vw;
-	background-image: url("images/help.png");
+    top: 1vw;
+    background-image: url("images/help.png");
+}
+
+#options-menu #optional {
+    top: 3.7vw;
+    background-image: url("images/optional.png");
+}
+
+#options-menu #progress{
+    top: 6.4vw;
+    background-image: url("images/percentage.png");
 }
 
 #options-menu #lock {
-	top: 3.7vw;
-	background-image: url("images/lock.png");
-}
-
-#options-menu #bucket {
-	top: 6.4vw;
-	background-image: url("images/bucket.png");
+    top: 9.1vw;
+    background-image: url("images/lock.png");
 }
 
 #options-menu #switch {
-	top: 9.1vw;
+	top: 11.8vw;
 	background-image: url("images/switch.png");
+}
+
+#options-menu #bucket {
+    top: 14.5vw;
+    background-image: url("images/bucket.png");
 }
 
 .option-marked {

@@ -2,6 +2,8 @@
 var openTooltips = [];          	// (internal) Array of IDs of currently active tooltips
 var timer = null;               	// (internal) Timer to keep track of "click and hold" or just "simple click"
 var editLock = "false";				// (internal) Variable to hold if course selection is locked due to options menu
+var showLock = "false";
+var showPogress = "false";
 var colorId = 0;					// (internal) Represents the index of the color being used to toggle courses as completed, as taken from the window.colors list
 var creditsOrCode = "credits"		// (internal) Holds whether credits or code are being displayed for courses at a given time
 var pressAndHoldTime = 500;    		// Period of time for the program to consider a touch/click as a "click and hold"
@@ -205,6 +207,8 @@ var pressAndHoldTime = 500;    		// Period of time for the program to consider a
         verifySemester(i);
     }
 
+    optionalCourseList();
+
 });
 
 
@@ -314,6 +318,46 @@ function courseToggle(index){
     verifySemester(courses[index].semester);
 
 }
+
+function optionalCourseList(){
+    // Creates a tooltip:
+    var courseList = document.getElementById("optional");
+    text = "<table id='courseTable'><tr><th>Código</th><th>Nome</th><th>Créditos</th>"
+    for (var i=0; i < window.opcourses.length; i++){
+        text += "<tr><td>"+opcourses[i].code+"</td><td>"+opcourses[i].name+"</td><td>"+opcourses[i].credits+"</td>"
+    }
+    text += "</table>"
+    courseList.innerHTML = '<span id= "courseContent" class="tooltiptext">'+text+'</span>';
+	var table = document.getElementById("courseContent");
+    table.style.height = "calc("+opcourses.length.toString()+"*1.81em";
+}
+
+
+function displayBar(){
+    var progressbar = document.getElementById("progress");
+    // progressbar.innerHTML = '<div id=barContainer class="w3-border w3-light-grey w3-round">\
+    progressbar.innerHTML = '<div id=barContainer class="w3-border w3-light-grey w3-round"><div id="progressbar" class="w3-container w3-blue w3-center">Obrigatórias 0/172</div></div>\
+    <div id=barContainer class="w3-border w3-light-grey w3-round"><div id="progressbar" class="w3-container w3-light-blue w3-center">Condicionadas 0/40</div></div>\
+    <div id=barContainer class="w3-border w3-light-grey w3-round"><div id="progressbar" class="w3-container w3-green w3-center">Livre Escolha 0/8</div></div>\
+    <div id=barContainer class="w3-border w3-light-grey w3-round"><div id="progressbar" class="w3-container w3-light-green w3-center">Grupo Humanas 0/4</div></div>\
+    <div id=barContainer class="w3-border w3-light-grey w3-round"><div id="progressbar" class="w3-container w3-pink w3-center">Grupo ACE 0/405</div></div>'
+
+    var container = document.getElementsByClassName("w3-border");
+    for(var i=0; i<container.length; i++){
+    container[i].style.position = "relative";
+    container[i].style.width = "50vw";
+    container[i].style.right = "68.5vw";
+    container[i].style.top = "10vh";
+    container[i].style.fontSize = "calc(1.36vw + 0.8vh)";
+}
+
+    var bar = document.getElementsByClassName("w3-container");
+    for(var i=0; i<bar.length; i++){
+    	bar[i].style.width = "50%";
+    	bar[i].style.testAlign = ""
+    }
+}
+
 
 // Function to display a tooltip with a slider when clicking on a course:
 function courseTooltip(index){
@@ -588,6 +632,67 @@ function handleOptionsMenu(){
 		}
 	});
 
+
+    //////////////////////////////
+    /// OPTIONAL COURSES ICON  ///
+    /////////////////////////////
+    var optionalButton = $("#optional");
+
+    if (editLock == "true"){
+        optionalButton.css("background-color", window.colors[0]);
+    } else {
+        optionalButton.addClass("incomplete-course");
+    }
+
+    // When clicking lock option:
+    optionalButton.on(mouseDown, function(){
+        var button = document.getElementsByClassName("tooltiptext");
+        // If option is already marked:
+        if (optionalButton.hasClass("incomplete-course")){
+            // Mark option:
+            optionalButton.removeClass("incomplete-course").addClass("complete-course");
+            button[0].style.display = "block";
+            showLock = "true";
+        } else {
+            // Unmarks option:
+            optionalButton.removeClass("complete-course").addClass("incomplete-course");
+            button[0].style.display = "none";
+            showLock = "false";
+        }
+    });
+
+
+    //////////////////////////////
+    ///     PROGRESS ICON     ///
+    /////////////////////////////
+    var progressButton = $("#progress");
+
+    if (editLock == "true"){
+        progressButton.css("background-color", window.colors[0]);
+    } else {
+        progressButton.addClass("incomplete-course");
+    }
+
+    // When clicking lock option:
+    progressButton.on(mouseDown, function(){
+        var button = document.getElementsByClassName("w3-border w3-light-grey w3-round")
+        // If option is already marked:
+        if (progressButton.hasClass("incomplete-course")){
+            // Mark option:
+            progressButton.removeClass("incomplete-course").addClass("complete-course");
+            displayBar();
+            for (var i=0; i<button.length;i++){
+            	button[i].style.display = "block";
+            }
+        } else {
+            // Unmarks option:
+            for (var i=0; i<button.length;i++){
+            	button[i].style.display = "none";
+            }
+            progressButton.removeClass("complete-course").addClass("incomplete-course");
+
+        }
+    });
 }
 
 
