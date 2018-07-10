@@ -1,6 +1,10 @@
 /* Number of total columns/semesters: */
 window.semesters = 10;
 
+/* List of available colors to toggle a course as completed */
+/* The first color is default for selecting options as well, so make sure to choose that one wisely */
+window.colors = ["#b1fca4", "#fac6ff", "#a8c9ff"];
+
 // Order of courses matters: do not swap positions. Append at the end.
 window.courses = [
 	{ name: "Computação I", credits: 5, semester: 1},
@@ -56,40 +60,4 @@ window.courses = [
 	{ name: "Atividades Acad. Livre Escolha", credits: 4, semester: 10, step: 1},
 	{ name: "Atividades Acad. Optativas", credits: 2, semester: 10, step: 1},
 	{ name: "Ativ. Compl. Especiais", credits: 405, semester: 10, step: 15}
-
-    // { name: "Algoritmos e Programação", credits: 5, semester: 1},
-    // { name: "Int. a Eng. Comp. e Informação", credits: 2, semester: 1},
-    // { name: "Atividades Acad. Opt. Humanas", credits: 2, semester: 2},
-    // { name: "Teoria da Computação", credits: 4, semester: 3},
-    // { name: "Atividades Acad. Opt. Humanas", credits: 2, semester: 3},
-    // { name: "Teoria dos Grafos", credits: 4, semester: 4, requirements: [13]},
-    // { name: "Estatística e Mod. Probabilísticos", credits: 4, semester: 4},
-    // { name: "Computadores e Sociedade", credits: 4, semester: 4},
-    // { name: "Cálculo IV", credits: 4, semester: 4, requirements: [9]},
-    // { name: "Banco de Dados", credits: 4, semester: 5},
-    // { name: "Lógica Matemática", credits: 4, semester: 5},
-    // { name: "Álg. Linear Computacional", credits: 4, semester: 5, requirements: [7, 16]},
-    // { name: "Redes de Computadores I", credits: 4, semester: 5},
-    // { name: "Química Experimental", credits: 2, semester: 5},
-    // { name: "Otimização", credits: 4, semester: 6, requirements: [0, 16]},
-    // { name: "Inteligência Computacional", credits: 4, semester: 6},
-    // { name: "Engenharia de Software", credits: 4, semester: 6},
-    // { name: "Redes de Computadores II", credits: 4, semester: 6},
-    // { name: "Telecomunic.", credits: 4, semester: 6},
-    // { name: "Computação Gráfica", credits: 4, semester: 6},
-    // { name: "Programação Avançada", credits: 4, semester: 7, requirements: [13, 6]},
-    // { name: "Computação de Alto Desempenho", credits: 3, semester: 7},
-    // { name: "Sistemas Distribuídos", credits: 4, semester: 7},
-    // { name: "Gestão do Conhecimento", credits: 4, semester: 7},
-    // { name: "Atividades Acad. Optativas", credits: 8, semester: 7, step: 1},
-    // { name: "Construção de Banco de Dados", credits: 4, semester: 8, requirements: [26]},
-    // { name: "Empreend. I", credits: 4, semester: 8},
-    // { name: "Qualidade de Software", credits: 4, semester: 8, requirements: [34]},
-    // { name: "Projeto de Graduação", credits: 4, semester: 8},
-    // { name: "Atividades Acad. Optativas", credits: 8, semester: 8, step: 1},
-    // { name: "Estágio Obrigatório", credits: 160, semester: 9},
-    // { name: "Atividades Acad. Optativas", credits: 16, semester: 9, step: 1},
-    // { name: "Atividades Acad. Optativas", credits: 8, semester: 10, step: 1},
-    // { name: "Atividades Acad. Livre Escolha", credits: 8, semester: 10, step: 1},
-    // { name: "Ativ. Compl. Especiais", credits: 405, semester: 10, step: 15},
-]
+];

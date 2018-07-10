@@ -19,9 +19,6 @@ html, body {
     display: block;
     width: 8vw;
     height: 9.2vh;
-    /* Rollover effect: */
-    -webkit-transition-duration: 0.4s; /* Safari */
-    transition-duration: 0.4s;
 }
 
 /* Removes blue outline when clicked: */
@@ -31,7 +28,9 @@ html, body {
 
 
 .course-box {
-
+	color: black;
+    /* Border of rectangle: */
+    border: 0.09vw solid black;
 }
 
 .semester-box {
@@ -134,6 +133,15 @@ html, body {
     user-select: none;
 }
 
+
+/* Class to make objects fade when changing colors: */
+.transition {
+	transition: 0.4s;
+    -webkit-transition: 0.4s;
+    -moz-transition: 0.4s;
+}
+
+
 /* Options menu: */
 
 #options-menu .option {
@@ -156,6 +164,7 @@ html, body {
 
 
 #options-menu #help {
+	top: 1vw;
 	background-image: url("images/help.png");
 }
 
@@ -164,9 +173,21 @@ html, body {
 	background-image: url("images/lock.png");
 }
 
+#options-menu #bucket {
+	top: 6.4vw;
+	background-image: url("images/bucket.png");
+}
+
+#options-menu #switch {
+	top: 9.1vw;
+	background-image: url("images/switch.png");
+}
+
 .option-marked {
 	background-color: #b1fca4;
 }
+
+
 
 /* Warning for when screen is in portrait mode: */
 
