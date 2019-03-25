@@ -633,9 +633,10 @@ function handleOptionsMenu(){
 	});
 
 
-    //////////////////////////////
-    /// OPTIONAL COURSES ICON  ///
     /////////////////////////////
+    /// OPTIONAL COURSES ICON ///
+    /////////////////////////////
+
     var optionalButton = $("#optional");
 
     if (editLock == "true"){
@@ -661,38 +662,6 @@ function handleOptionsMenu(){
         }
     });
 
-
-    //////////////////////////////
-    ///     PROGRESS ICON     ///
-    /////////////////////////////
-    var progressButton = $("#progress");
-
-    if (editLock == "true"){
-        progressButton.css("background-color", window.colors[0]);
-    } else {
-        progressButton.addClass("incomplete-course");
-    }
-
-    // When clicking lock option:
-    progressButton.on(mouseDown, function(){
-        var button = document.getElementsByClassName("w3-border w3-light-grey w3-round")
-        // If option is already marked:
-        if (progressButton.hasClass("incomplete-course")){
-            // Mark option:
-            progressButton.removeClass("incomplete-course").addClass("complete-course");
-            displayBar();
-            for (var i=0; i<button.length;i++){
-            	button[i].style.display = "block";
-            }
-        } else {
-            // Unmarks option:
-            for (var i=0; i<button.length;i++){
-            	button[i].style.display = "none";
-            }
-            progressButton.removeClass("complete-course").addClass("incomplete-course");
-
-        }
-    });
 }
 
 
